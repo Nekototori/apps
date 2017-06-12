@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source "/opt/apps/<%= name %>/env"
+source "/opt/apps/<%= $name %>/env"
 
 if [[ ! -L "$ROOT_PATH/node_modules" ]]; then
   rm -f "$ROOT_PATH/node_modules"

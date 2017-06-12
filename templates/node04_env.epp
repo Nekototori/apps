@@ -1,6 +1,6 @@
 # env
-export ENV="<%= env %>"
-export ROOT_PATH="/opt/apps/<%= name %>"
+export ENV="<%= $env %>"
+export ROOT_PATH="/opt/apps/<%= $name %>"
 export DATA_PATH="$ROOT_PATH/data"
 export DEPS_PATH="$ROOT_PATH/deps"
 export LOGS_PATH="$ROOT_PATH/logs"
@@ -9,10 +9,11 @@ export VAR_PATH="$ROOT_PATH/var"
 
 # app
 export PATH="$REPO_PATH/bin:$PATH"
+export NODE_ENV="<%= $env %>"
 
 # app env
-<% if @environment %>
-<% environment.keys.sort.each do |k| %>
-export <%= k %>="<%= environment[k] %>"
-<% end %>
-<% end %>
+<% if $environment { %>
+<% $environment.keys.sort.each do |$k| { %>
+export <%= $k %>="<%= $environment[k] %>"
+<% } %>
+<% } %>

@@ -1,0 +1,6 @@
+#!/bin/sh
+<%- if $deploy_style == 'git' {-%>
+/bin/echo shutterstock_app_<%= $name %>_version=`cd <%= $repo_path %>; /usr/bin/git branch | /bin/grep '\*' | /bin/awk '{ print \$2 }'`
+<%- } elsif $deploy_style == 'rsync' { -%>
+/bin/echo shutterstock_app_<%= $name %>_version=`cat <%= $repo_path %>/VERSION`
+<%- } -%>

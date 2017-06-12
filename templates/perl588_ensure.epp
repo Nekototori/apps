@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source "/opt/apps/<%= name %>/env"
+source "/opt/apps/<%= $name %>/env"
 
 # FIXME(ssewell): remove once we run perl apps as ssuser
 if [[ "$SKIP_DATA_HACK" != 'true' ]]; then
