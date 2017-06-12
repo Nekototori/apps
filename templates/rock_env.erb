@@ -1,0 +1,19 @@
+# env
+export ENV="<%= env %>"
+export ROCK_ENV="<%= env %>"
+export ROOT_PATH="<%= root_path %>"
+export DATA_PATH="<%= data_path %>"
+export DEPS_PATH="<%= deps_path %>"
+export LOGS_PATH="<%= logs_path %>"
+export REPO_PATH="<%= repo_path %>"
+export VAR_PATH="<%= var_path %>"
+
+# app
+eval $(rock --path $REPO_PATH env)
+
+# app env
+<% if @environment %>
+<% environment.keys.sort.each do |k| %>
+export <%= k %>="<%= environment[k] %>"
+<% end %>
+<% end %>

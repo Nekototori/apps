@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+ssh -i /var/lib/ssuser/.ssh/id_rsa -o 'StrictHostKeyChecking no' "$@"

@@ -1,0 +1,97 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+# This a simple wrapper script for integrating cron duration and execution
+# monitoring with the online service cronitor.io which is leveraged
+# to send notifications based on certain events.
+#
+# --timer-id option is for use with the timing cronitor type
+# Use this to determine if a cron ran too quickly or too slowly
+# and to determine if a cron has succeeded
+#
+# --error-id option is for use with rule "Has Completed"
+# Non-zero exit status can notify cronitor of script error
+# The error cronitor always sends a notification if called
+# This is a slight misuse of cronitor, leveraging a positive
+# event to report a negative event.
+#
+# EXAMPLE: command => "${app_path}/run ${repo_path}/scripts/utility/cron_monitor.pl \
+#             -t 6bd707bc715e -e 8e03d1f61dfc -- /bin/su ssuser -s /bin/bash -c \
+#             '${app_path}/run rock --path ${repo_path} run ${repo_path}/scripts/cron_to_run.pl' \
+#             1>> ${logs_path}/  cron.cron_to_run.pl.stdout.log 2>> ${logs_path}/cron.cron_to_run.pl.stderr.log"
+#
+use Getopt::Long qw(:config);
+my $MONITOR_BASE_URL = 'https://cronitor.link';
+my $CURL             = 'curl --silent --insecure --max-time 10 --retry 3';
+my %EVENT_TYPES = (
+  begin   => 'b',
+  end     => 'e',
+  error   => 'e',
+  default => 'e'
+);
+
+my ($timer_id, $error_id, $disable_alerts, $env);
+my $mode = 'external'; # default to cronitor
+GetOptions(
+  'env=s'            => \$env,
+  'm|mode=s'         => \$mode,
+  't|timer-id=s'     => \$timer_id,
+  'e|error-id=s'     => \$error_id,
+  'd|disable-alerts' => \$disable_alerts,
+);
+
+if($mode eq 'internal') { # cronmonitor
+  my $url_env = !$env || $env eq 'prod' ? '' : ".$env";
+  $MONITOR_BASE_URL = "http://cronmonitor$url_env.shuttercorp.net/api/v1/monitors";
+  $CURL .= ' -X POST';
+  $error_id = $timer_id; # cron monitor uses the same ID for timing and errors
+  %EVENT_TYPES = (
+    begin   => 'start',
+    end     => 'complete',
+    error   => 'error',
+    default => 'complete'
+  );
+}
+
+# allow the disabling alerts for lower environments
+if ($disable_alerts) {
+  warn "$0: running with alerts disabled for '$ARGV[0]'\n";
+}
+
+sub emit_monitor_event {
+  my ($event_id, $event_type) = @_;
+
+  $event_type = $EVENT_TYPES{$event_type};
+  if(not defined $event_id) {
+    warn "unknown event type: $event_type";
+    return;
+  }
+
+  return if $disable_alerts;
+
+  # eat errors contacting the monitor host; we should should still
+  # attempt the to run the designated script
+  system("$CURL $MONITOR_BASE_URL/$event_id/$event_type");
+}
+
+# begin monitor event
+emit_monitor_event($timer_id, 'begin');
+
+# execute program under monitoring
+my $status = system(@ARGV);
+
+#end monitor event
+if($mode eq 'internal') {
+  emit_monitor_event($timer_id, $status != 0 ? 'error' : 'end');
+} else {
+  emit_monitor_event($timer_id, 'end');
+
+  # non-zero exit trigger an error event if one was specified
+  if ($status != 0) {
+    emit_monitor_event($error_id, 'error');
+  }
+}
+
+exit 0;

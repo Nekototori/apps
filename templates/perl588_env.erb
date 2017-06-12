@@ -1,0 +1,25 @@
+# env
+export ENV="<%= env %>"
+export ROOT_PATH="/opt/apps/<%= name %>"
+export DATA_PATH="$ROOT_PATH/data"
+export DEPS_PATH="$ROOT_PATH/deps"
+export LOGS_PATH="$ROOT_PATH/logs"
+export REPO_PATH="$ROOT_PATH/repo"
+export VAR_PATH="$ROOT_PATH/var"
+
+# shutterstock-perl
+export PATH="/opt/shutterstock-perl/usr/bin:$PATH"
+
+# local-lib
+eval $( perl -Mlocal::lib=$DEPS_PATH )
+
+# app
+export PATH="$REPO_PATH/bin:$PATH"
+export PERL5LIB="$REPO_PATH/lib:$PERL5LIB"
+
+# app env
+<% if @environment %>
+<% environment.keys.sort.each do |k| %>
+export <%= k %>="<%= environment[k] %>"
+<% end %>
+<% end %>

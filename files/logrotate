@@ -1,0 +1,13 @@
+/opt/apps/*/logs/*.log {
+    size 500M
+    rotate 6
+    missingok
+    notifempty
+    compress
+    sharedscripts
+    postrotate
+        [ -f /var/run/nginx.pid ] && kill -USR1 `cat /var/run/nginx.pid` ; true
+        [ -f /var/run/supervisord.pid ] && kill -USR2 `cat /var/run/supervisord.pid` ; true
+        /bin/kill -HUP `cat /var/run/syslogd.pid 2> /dev/null` 2> /dev/null || true
+    endscript
+}

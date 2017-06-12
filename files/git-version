@@ -1,0 +1,78 @@
+#!/usr/bin/env bash
+
+error() {
+  echo "$@" >&2
+  exit 1
+}
+
+export GIT_SSH='/opt/apps/.bin/git-ssh'
+
+name="$1"
+version="$2"
+path="/opt/apps/${name}/repo"
+
+# ensure we got a sha1
+echo "$version" | grep -P '^[a-z0-9]{40}$' &>/dev/null || \
+  error 'Version must be a sha1'
+
+# ensure we have a git repo
+if [[ ! -f "${path}/.git/config" ]]; then
+  error 'Git repo "'${path}'" must be setup'
+fi
+
+# switch to it
+cd "$path" &>/dev/null || \
+  error 'Unable to cd to "'${path}'"'
+
+# get head
+head="$( git rev-parse HEAD 2>/dev/null )" || \
+  error 'Failed to get HEAD'
+
+# stop if we're at current version
+if [[ "$head" == "$version" ]]; then
+  echo -n "$head" ; exit
+fi
+
+# reset to HEAD
+git reset --hard "$head" &>/dev/null || \
+  error "Failed to reset to git current head"
+
+# delete anything that's changed
+git clean -dfx &>/dev/null || \
+  error 'Failed to git clean'
+
+
+# get new content
+
+git_fetch_ok=0
+
+for i in {1..5}; do
+  if git fetch origin &>/dev/null; then
+    git_fetch_ok=1
+    break
+  fi
+  sleep 1
+done
+
+if [[ $git_fetch_ok != 1 ]]; then
+  error 'Failed git fetch origin'
+fi
+
+# switch to new working code
+git reset --hard "$version" &>/dev/null || \
+  error 'Failed to git reset to sha1'
+
+# move this to post deploy hook
+if [[ $name == 'shutterstock-mason' ]]; then
+  touch "/opt/apps/$name/data/reload_mason"
+fi
+
+# run ensure after update
+if [[ -x "/opt/apps/${name}/ensure" ]]; then
+  timeout 10 "/opt/apps/${name}/ensure" || \
+    error "Failed to run ensure ($?)"
+fi
+
+# return head
+echo -n $( git rev-parse HEAD 2>/dev/null ) || \
+  error 'Failed to get HEAD'
