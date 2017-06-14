@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-source "/opt/apps/<%= $name %>/env"
+source "/opt/apps/<%= $apps::name %>/env"
 exec "$@"
