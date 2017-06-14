@@ -28,7 +28,7 @@ include rock
     ensure  => directory,
     owner   => $user,
     group   => $group,
-    mode    => 0777,
+    mode    => '0777',
     require => File['/opt/apps'],
   }
 
