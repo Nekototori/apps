@@ -14,6 +14,6 @@ eval $(rock --path $REPO_PATH env)
 # app env
 <% if $environment { %>
 <% $environment.each |$k| { %>
-export <%= $k %>="<%= $environment[k] %>"
+export <%= $k %>="<%= $environment['k'] %>"
 <% } %>
 <% } %>
