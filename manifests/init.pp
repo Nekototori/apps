@@ -34,12 +34,12 @@ include rock
 
   file { "${root_path}/run":
     ensure  => file,
-    content => template('apps/run.epp'),
+    content => epp('apps/run.epp'),
     require => File['/opt/apps'],
   }
   file { "${root_path}/env":
     ensure  => file,
-    content => template('apps/rock_env.epp'),
+    content => epp('apps/rock_env.epp'),
     require => File['/opt/apps'],
   }
 }
