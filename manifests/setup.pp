@@ -53,7 +53,6 @@ define apps::setup(
     ensure  => present,
     mode    => '0755',
     content => template('apps/shutterstock_app_version.sh.erb'),
-    require => Class['facts'],
   }
 
   case $platform {
