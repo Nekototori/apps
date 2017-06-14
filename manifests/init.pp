@@ -11,6 +11,7 @@ class apps (
   $var_path  = "${root_path}/var"
   $conf_path = "${root_path}/conf"
   $deps_path = "${root_path}/deployment"
+  $repo_path = "${root_path}/deployment"
 
 # The mystery env variable that does things like set other
 # things whose wicked web is yet untangled.
