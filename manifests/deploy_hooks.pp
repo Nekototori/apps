@@ -10,10 +10,7 @@ define apps::deploy_hooks (
   $postdeploy = false,
   $prerestart = false,
   $postrestart = false,
-) {
-
-  $root_path = "${base_path}/${app}"
-  $hooks_path = "${root_path}/hooks"
+) inherits apps::params {
 
   if $ensure == 'present' {
 
@@ -39,8 +36,6 @@ define apps::deploy_hooks (
 
     case $type {
       'rolling': {
-        $puppet_path = "puppet:///modules/apps/deploy_hooks/rolling"
-
         file { [
                  "${apps_path}/${application_name}/predeploy.d/",
                  "${apps_path}/${application_name}/postrestart.d/"
@@ -96,8 +91,6 @@ define apps::deploy_hooks (
       }
 
       'custom': {
-        $puppet_path = "puppet:///modules/roles/${app}/deploy_hooks"
-
         if $restart {
           file { $restart_script:
             ensure  => present,
