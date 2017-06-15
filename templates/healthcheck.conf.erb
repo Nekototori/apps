@@ -1,3 +1,4 @@
+# Managed by Puppet
 lua_shared_dict healthcheck_dict 12k;
 init_by_lua 'ngx.shared.healthcheck_dict:set("state", "up");';
 
