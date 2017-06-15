@@ -54,11 +54,11 @@ class apps::deploy_hooks (
        }
 
        file { "/etc/nginx/vhost.d/healthcheck.conf":
-         ensure => file,
-         owner  => 'root',
-         group  => 'root',
-         mode   => '0644',
-         source => template("apps/healthcheck.conf.erb"),
+         ensure  => file,
+         owner   => 'root',
+         group   => 'root',
+         mode    => '0644',
+         content => template("apps/healthcheck.conf.erb"),
        }
 
        file { "${base_path}/deployenv":
