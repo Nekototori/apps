@@ -40,7 +40,6 @@ define apps::deploy_hooks (
     case $type {
       'rolling': {
         $puppet_path = "puppet:///modules/apps/deploy_hooks/rolling"
-        include apps::deploy_hooks::directory
 
         file { [
                  "${apps_path}/${application_name}/predeploy.d/",
@@ -98,7 +97,6 @@ define apps::deploy_hooks (
 
       'custom': {
         $puppet_path = "puppet:///modules/roles/${app}/deploy_hooks"
-        include apps::deploy_hooks::directory
 
         if $restart {
           file { $restart_script:
