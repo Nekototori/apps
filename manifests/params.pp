@@ -8,6 +8,9 @@ class apps::params {
   $repo_path  = "${root_path}/deployment"
   $hooks_path = "${root_path}/hooks"
 
+  $user  = 'root'
+  $group = 'root'
+
   $healthcheck_port    = "2525"
   $delay               = "5"
   $server_port         = $port

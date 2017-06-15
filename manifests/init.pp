@@ -2,8 +2,8 @@
 # and is locked to deploying command-center for now.
 class apps (
   $application_name = 'command-center',
-  $user = 'root',
-  $group = 'root',
+  $user,
+  $group,
   $port = '80',
 ) inherits apps::params {
   class { 'apps::deploy_hooks' :
