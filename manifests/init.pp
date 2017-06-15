@@ -25,7 +25,9 @@ class apps (
 # things whose wicked web is yet untangled.
   $env = 'dev'
 
-  include apps::deploy_hooks
+  apps::deploy_hooks { 'rolling_deploy':
+    app => $application_name,
+  }
 
   # Since rock is a dependency, we want to ensure rock
   # is included.
