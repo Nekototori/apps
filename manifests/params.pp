@@ -7,7 +7,7 @@ class apps::params {
   $deps_path  = "${root_path}/deployment"
   $repo_path  = "${root_path}/deployment"
   $hooks_path = "${root_path}/hooks"
-
+  $type = 'rolling'
   $user  = 'root'
   $group = 'root'
 
