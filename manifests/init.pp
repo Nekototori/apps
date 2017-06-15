@@ -4,6 +4,7 @@ class apps (
   $application_name = 'command-center',
   $user = 'root',
   $group = 'root',
+  $port = '80',
 ) {
   $root_path = "/opt/apps/${application_name}"
   $data_path = "${root_path}/data"
@@ -13,13 +14,22 @@ class apps (
   $deps_path = "${root_path}/deployment"
   $repo_path = "${root_path}/deployment"
 
+  $healthcheck_port    = "2525"
+  $delay               = "5"
+  $server_port         = $port
+  $app_host            = "localhost"
+  $app_healthcheck_url = "/healthcheck.html"
+  $app_ports           = []
+
 # The mystery env variable that does things like set other
 # things whose wicked web is yet untangled.
   $env = 'dev'
 
-# Since rock is a dependency, we want to ensure rock
-# is included.
-include rock
+  include apps::deploy_hooks
+
+  # Since rock is a dependency, we want to ensure rock
+  # is included.
+  include rock
 
   file { '/opt/apps':
     ensure => directory,

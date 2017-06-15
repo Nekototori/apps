@@ -1,0 +1,11 @@
+export HEALTHCHECK_URL='/healthcheck'
+export HEALTHCHECK_PORT=<%= @healthcheck_port %>
+export HEALTHCHECK_REMOVEURL='/healthcheck/remove'
+export HEALTHCHECK_ADDURL='/healthcheck/add'
+
+export DELAY=<%= @delay %>
+
+export SERVER_PORT=<%= @server_port %>
+export APP_HOST=<%= @app_host %>
+export APP_HEALTHCHECKURL='<%= @app_healthcheck_url %>'
+export APP_PORTS=(<%= @app_ports.join(' ') %>)

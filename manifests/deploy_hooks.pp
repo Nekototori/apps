@@ -42,6 +42,48 @@ define apps::deploy_hooks (
         $puppet_path = "puppet:///modules/apps/deploy_hooks/rolling"
         include apps::deploy_hooks::directory
 
+        file { [
+                 "${apps_path}/${application_name}/predeploy.d/",
+                 "${apps_path}/${application_name}/postrestart.d/"
+               ]:
+          ensure => directory,
+          user   => $user,
+          group  => $group,
+          mode   => '0755',
+       }
+
+       file { "${hooks_path}/predeploy.d/01-predeploy.sh":
+         ensure => file,
+         user   => 'root',
+         group  => 'root',
+         mode   => '0755',
+         source => "${puppet_path}/01-predeploy.sh"
+       }
+
+       file { "${hooks_path}/postrestart.d/01-postrestart.sh":
+         ensure => file,
+         user   => 'root',
+         group  => 'root',
+         mode   => '0755',
+         source => "${puppet_path}/01-postrestart.sh"
+       }
+
+       file { "/etc/nginx/vhost.d/healthcheck.conf":
+         ensure => file,
+         user   => 'root',
+         group  => 'root',
+         mode   => '0644',
+         source => template("apps/healthcheck.conf.erb"),
+       }
+
+       file { "${base_path}/deployenv":
+         ensure => file,
+         user   => 'root',
+         group  => 'root',
+         mode   => '0644',
+         source => template("apps/deployenv.erb"),
+       }
+
         if $restart {
           file { $restart_script:
             ensure  => present,

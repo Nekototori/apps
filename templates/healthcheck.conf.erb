@@ -1,0 +1,33 @@
+lua_shared_dict healthcheck_dict 12k;
+init_by_lua 'ngx.shared.healthcheck_dict:set("state", "up");';
+
+server {
+	listen 127.0.0.1:<%= @port %>;
+
+	location /healthcheck/add {
+		set_by_lua $health_state '
+			return ngx.shared.healthcheck_dict:set("state", "up");
+		';
+
+		return 200 $health_state;
+	}
+
+	location /healthcheck/remove {
+		set_by_lua $health_state '
+			return ngx.shared.healthcheck_dict:set("state", "down");
+		';
+
+		return 200 $health_state;
+	}
+
+	location /healthcheck {
+		content_by_lua '
+			local health_state = ngx.shared.healthcheck_dict:get("state");
+			local health_status_code = 200;
+			if health_state == "down" then health_status_code = 503 end;
+
+			ngx.status = health_status_code;
+			ngx.say(health_state);
+		';
+	}
+}
