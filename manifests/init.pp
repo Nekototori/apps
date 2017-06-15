@@ -6,7 +6,7 @@ class apps (
   $group = 'root',
   $port = '80',
 ) inherits apps::params {
-  apps::deploy_hooks { 'rolling_deploy':
+  class { 'apps::deploy_hooks' :
     ensure => present,
     app    => $application_name,
     user   => $user,

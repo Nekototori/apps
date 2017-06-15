@@ -1,4 +1,4 @@
-define apps::deploy_hooks (
+class apps::deploy_hooks (
   $app,
   $base_path = '/opt/apps',
   $ensure = 'absent',
