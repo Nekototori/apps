@@ -32,8 +32,8 @@ class apps::deploy_hooks (
                  "${apps_path}/${application_name}/postrestart.d/"
                ]:
           ensure => directory,
-          user   => $user,
-          group  => $group,
+          user   => $apps::user,
+          group  => $apps::group,
           mode   => '0755',
        }
 
