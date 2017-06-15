@@ -1,16 +1,4 @@
-class apps::deploy_hooks (
-  $app,
-  $base_path = '/opt/apps',
-  $ensure = 'absent',
-  $type = 'rolling',
-  $user = 'ssuser',
-  $group = 'ssgroup',
-  $restart = false,
-  $predeploy = false,
-  $postdeploy = false,
-  $prerestart = false,
-  $postrestart = false,
-) inherits apps {
+class apps::deploy_hooks inherits apps {
 
   if $ensure == 'present' {
 
