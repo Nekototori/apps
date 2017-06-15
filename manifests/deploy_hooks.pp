@@ -10,7 +10,7 @@ class apps::deploy_hooks (
   $postdeploy = false,
   $prerestart = false,
   $postrestart = false,
-) inherits apps::params {
+) inherits apps {
 
   if $ensure == 'present' {
 
