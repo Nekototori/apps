@@ -1,7 +1,7 @@
 # This is a fresh start from the included code
 # and is locked to deploying command-center for now.
 class apps (
-  $application_name = 'command-center',
+  $application_name = $apps::params::application_name,
   $user = $apps::params::user,
   $group = $apps::params::group,
   $port = $apps::params::server_port,

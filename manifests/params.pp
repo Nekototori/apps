@@ -1,12 +1,14 @@
 class apps::params {
-  $root_path  = "/opt/apps/${application_name}"
-  $data_path  = "${root_path}/data"
-  $logs_path  = "${root_path}/logs"
-  $var_path   = "${root_path}/var"
-  $conf_path  = "${root_path}/conf"
-  $deps_path  = "${root_path}/deployment"
-  $repo_path  = "${root_path}/deployment"
-  $hooks_path = "${root_path}/hooks"
+  $application_name = 'command-center'
+  $root_path        = "/opt/apps/${application_name}"
+  $data_path        = "${root_path}/data"
+  $logs_path        = "${root_path}/logs"
+  $var_path         = "${root_path}/var"
+  $conf_path        = "${root_path}/conf"
+  $deps_path        = "${root_path}/deployment"
+  $repo_path        = "${root_path}/deployment"
+  $hooks_path       = "${root_path}/hooks"
+
   $type = 'rolling'
   $user  = 'root'
   $group = 'root'
