@@ -28,6 +28,8 @@ class apps (
   apps::deploy_hooks { 'rolling_deploy':
     ensure => present,
     app    => $application_name,
+    user   => $user,
+    group  => $group,
   }
 
   # Since rock is a dependency, we want to ensure rock
