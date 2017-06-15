@@ -62,11 +62,11 @@ class apps::deploy_hooks (
        }
 
        file { "${base_path}/deployenv":
-         ensure => file,
-         owner  => 'root',
-         group  => 'root',
-         mode   => '0644',
-         source => template("apps/deployenv.erb"),
+         ensure  => file,
+         owner   => 'root',
+         group   => 'root',
+         mode    => '0644',
+         content => template("apps/deployenv.erb"),
        }
 
         if $restart {
