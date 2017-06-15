@@ -1,4 +1,7 @@
-class apps::deploy_hooks inherits apps {
+class apps::deploy_hooks (
+  $ensure,
+  $app,
+) inherits apps {
 
   if $ensure == 'present' {
 
