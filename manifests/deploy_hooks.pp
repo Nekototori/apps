@@ -32,14 +32,14 @@ class apps::deploy_hooks (
                  "${apps_path}/${application_name}/postrestart.d/"
                ]:
           ensure => directory,
-          user   => 'root',
-          group  => 'root',
+          owner  => $user,
+          group  => $group,
           mode   => '0755',
        }
 
        file { "${hooks_path}/predeploy.d/01-predeploy.sh":
          ensure => file,
-         user   => 'root',
+         owner  => 'root',
          group  => 'root',
          mode   => '0755',
          source => "${puppet_path}/01-predeploy.sh"
@@ -47,7 +47,7 @@ class apps::deploy_hooks (
 
        file { "${hooks_path}/postrestart.d/01-postrestart.sh":
          ensure => file,
-         user   => 'root',
+         owner  => 'root',
          group  => 'root',
          mode   => '0755',
          source => "${puppet_path}/01-postrestart.sh"
@@ -55,7 +55,7 @@ class apps::deploy_hooks (
 
        file { "/etc/nginx/vhost.d/healthcheck.conf":
          ensure => file,
-         user   => 'root',
+         owner  => 'root',
          group  => 'root',
          mode   => '0644',
          source => template("apps/healthcheck.conf.erb"),
@@ -63,7 +63,7 @@ class apps::deploy_hooks (
 
        file { "${base_path}/deployenv":
          ensure => file,
-         user   => 'root',
+         owner  => 'root',
          group  => 'root',
          mode   => '0644',
          source => template("apps/deployenv.erb"),
@@ -73,7 +73,7 @@ class apps::deploy_hooks (
           file { $restart_script:
             ensure  => present,
             source  => "${puppet_path}/restart.sh",
-            user    => $user,
+            owner   => $user,
             group   => $group,
             mode    => '0755',
             require => File[$hooks_path],
@@ -86,7 +86,7 @@ class apps::deploy_hooks (
           file { $restart_script:
             ensure  => present,
             source  => "${puppet_path}/restart.sh",
-            user    => $user,
+            owner   => $user,
             group   => $group,
             mode    => '0755',
             require => File[$hooks_path],
