@@ -10,6 +10,8 @@ class apps::params {
   $repo_path        = "${root_path}/deployment"
   $hooks_path       = "${root_path}/hooks"
 
+  $service_type = 'simple'
+  $service_restart = 'no'
   $type = 'rolling'
   $user  = 'root'
   $group = 'root'
