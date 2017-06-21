@@ -28,8 +28,8 @@ class apps::deploy_hooks (
     case $type {
       'rolling': {
         file { [
-                 "${apps_path}/${application_name}/predeploy.d/",
-                 "${apps_path}/${application_name}/postrestart.d/"
+                 "${$predeploy_hooks_path}",
+                 "${postrestart_hooks_path}"
                ]:
           ensure => directory,
           owner  => $user,
