@@ -1,5 +1,6 @@
 class apps::params {
   $application_name = 'command-center'
+  $application_description = 'Command Center Web Server'
   $root_path        = "/opt/apps/${application_name}"
   $data_path        = "${root_path}/data"
   $logs_path        = "${root_path}/logs"
