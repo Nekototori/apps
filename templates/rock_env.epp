@@ -12,8 +12,8 @@ export VAR_PATH="<%= $apps::var_path %>"
 eval $(rock --path $REPO_PATH env)
 
 # app env
-<% if $apps::environment { %>
-<% $apps::environment.each |$key, $value| { %>
+<% if $apps::environment { -%>
+<% $apps::environment.each |$key, $value| { -%>
 export <%= $key %>="<%= $value %>"
 <% } %>
 <% } %>
