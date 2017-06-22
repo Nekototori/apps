@@ -23,7 +23,10 @@ class apps::params {
   $app_healthcheck_url = "/healthcheck.html"
   $app_ports           = []
 
+  $error_log_file = "${logs_path}/json.error.log"
   $env = 'dev'
-
+  $environment = {
+    'ERROR_LOG_FILE'         => $error_log_file,
+  }
   $puppet_path = "puppet:///modules/apps/deploy_hooks/rolling"
 }

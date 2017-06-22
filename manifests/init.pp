@@ -6,8 +6,10 @@ class apps (
   $user = $apps::params::user,
   $group = $apps::params::group,
   $port = $apps::params::server_port,
-  $service_type = $apps::params::service_type,
-  $service_restart = $apps::params::service_restart,
+  String $service_type = $apps::params::service_type,
+  String $service_restart = $apps::params::service_restart,
+  Hash $environment = $apps::params::environment,
+  String $error_log_file = $apps::params::error_log_file
 
 ) inherits apps::params {
   class { 'apps::deploy_hooks' :
@@ -37,8 +39,8 @@ class apps (
     require => File['/opt/apps'],
   }
   file { "${root_path}/env":
-    ensure  => file,
-    content => epp('apps/rock_env.epp'),
+    ensure        => file,
+    content       => epp('apps/rock_env.epp'),
     require => File['/opt/apps'],
   }
 
