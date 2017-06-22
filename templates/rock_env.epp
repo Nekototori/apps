@@ -13,7 +13,7 @@ eval $(rock --path $REPO_PATH env)
 
 # app env
 <% if $apps::environment { %>
-<% $apps::environment.each |$value| { %>
-export <%= $value %>="<%= $apps::environment['value'] %>"
+<% $apps::environment.each |$key, $value| { %>
+export <%= $key %>="<%= $value %>"
 <% } %>
 <% } %>
