@@ -1,11 +1,11 @@
 # This is a fresh start from the included code
 # and is locked to deploying command-center on centos 7 for now.
 class apps (
-  $application_name = $apps::params::application_name,
-  $application_description = $apps::params::application_description,
-  $user = $apps::params::user,
-  $group = $apps::params::group,
-  $port = $apps::params::server_port,
+  String $application_name = $apps::params::application_name,
+  String $application_description = $apps::params::application_description,
+  String $user = $apps::params::user,
+  String $group = $apps::params::group,
+  String $port = $apps::params::server_port,
   String $service_type = $apps::params::service_type,
   String $service_restart = $apps::params::service_restart,
   Hash $environment = $apps::params::environment,
