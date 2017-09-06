@@ -35,6 +35,7 @@ class apps (
 
   file { "${root_path}/run":
     ensure  => file,
+    mode    => '0755',
     content => epp('apps/run.epp'),
     require => File['/opt/apps'],
   }
