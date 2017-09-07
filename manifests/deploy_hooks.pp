@@ -53,13 +53,13 @@ class apps::deploy_hooks (
          source => "${puppet_path}/01-postrestart.sh"
        }
 
-       file { "/etc/nginx/vhost.d/healthcheck.conf":
-         ensure  => file,
-         owner   => 'root',
-         group   => 'root',
-         mode    => '0644',
-         content => template("apps/healthcheck.conf.erb"),
-       }
+       #       file { "/etc/nginx/vhost.d/healthcheck.conf":
+       #  ensure  => file,
+       #  owner   => 'root',
+       #  group   => 'root',
+       #  mode    => '0644',
+       #  content => template("apps/healthcheck.conf.erb"),
+       #}
 
        file { "${base_path}/deployenv":
          ensure  => file,
