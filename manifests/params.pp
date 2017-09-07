@@ -19,6 +19,7 @@ class apps::params {
   $healthcheck_port    = "2525"
   $delay               = "5"
   $server_port         = "80"
+  $app_port            = '8000'
   $app_host            = "localhost"
   $app_healthcheck_url = "/healthcheck.html"
   $app_ports           = []

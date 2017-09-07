@@ -5,7 +5,8 @@ class apps (
   String $application_description = $apps::params::application_description,
   String $user = $apps::params::user,
   String $group = $apps::params::group,
-  String $port = $apps::params::server_port,
+  String $server_port = $apps::params::server_port,
+  String $app_port = $apps::params::app_port,
   String $service_type = $apps::params::service_type,
   String $service_restart = $apps::params::service_restart,
   Hash $environment = $apps::params::environment,
@@ -54,5 +55,8 @@ class apps (
     execstart   => "/opt/apps/${application_name}/run rock --path /opt/apps/${application_name}/deployment run_web",
     pid_file    => "/opt/apps/${application_name}/master.pid",
     restart     => $service_restart,
+    env_vars    => [
+      "HTTP_PORT=${app_port}"
+    ],
   }
 }
