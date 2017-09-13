@@ -22,7 +22,7 @@ class apps::params {
   $app_port            = '8000'
   $app_host            = "localhost"
   $app_healthcheck_url = "/healthcheck.html"
-  $app_ports           = []
+  $app_ports           = ['8003','8004']
 
   $error_log_file = "${logs_path}/json.error.log"
   $env = 'dev'

@@ -47,7 +47,7 @@ class apps (
   }
 
   # We also want to stage the service via systemd
-  $app_port.each | String $port | {
+  $app_port.each | $port | {
     systemd::service { "${application_name}_${port}":
       description => $application_description,
       type        => $service_type,
