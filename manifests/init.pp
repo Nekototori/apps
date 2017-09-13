@@ -6,7 +6,7 @@ class apps (
   String $user = $apps::params::user,
   String $group = $apps::params::group,
   String $server_port = $apps::params::server_port,
-  Variant[String, Array] $app_port = $apps::params::app_port,
+  Array  $app_port = $apps::params::app_port,
   String $service_type = $apps::params::service_type,
   String $service_restart = $apps::params::service_restart,
   Hash $environment = $apps::params::environment,
