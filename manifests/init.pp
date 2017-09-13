@@ -47,16 +47,18 @@ class apps (
   }
 
   # We also want to stage the service via systemd
-  systemd::service { $application_name:
-    description => $application_description,
-    type        => $service_type,
-    user        => $user,
-    group       => $group,
-    execstart   => "/opt/apps/${application_name}/run rock --path /opt/apps/${application_name}/deployment run_web",
-    pid_file    => "/opt/apps/${application_name}/master.pid",
-    restart     => $service_restart,
-    env_vars    => [
-      "HTTP_PORT=${app_port}"
-    ],
+  $app_port.each | String $port | {
+    systemd::service { "${application_name}_${port}":
+      description => $application_description,
+      type        => $service_type,
+      user        => $user,
+      group       => $group,
+      execstart   => "/opt/apps/${application_name}/run rock --path /opt/apps/${application_name}/deployment run_web",
+      pid_file    => "/opt/apps/${application_name}/master.pid",
+      restart     => $service_restart,
+      env_vars    => [
+        "HTTP_PORT=${port}"
+      ],
+    }
   }
 }
