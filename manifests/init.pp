@@ -59,6 +59,10 @@ class apps (
       env_vars    => [
         "HTTP_PORT=${port}"
       ],
+      before => Service["${application_name}_${port}"],
+    }
+    service { "${application_name}_${port}":
+      enabled => true,
     }
   }
 }
