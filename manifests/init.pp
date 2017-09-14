@@ -6,7 +6,7 @@ class apps (
   String $user = $apps::params::user,
   String $group = $apps::params::group,
   String $server_port = $apps::params::server_port,
-  Array  $app_port = $apps::params::app_port,
+  Array  $app_ports = $apps::params::app_ports,
   String $service_type = $apps::params::service_type,
   String $service_restart = $apps::params::service_restart,
   Hash $environment = $apps::params::environment,
@@ -48,7 +48,7 @@ class apps (
   }
 
   # We also want to stage the service via systemd
-  $app_port.each | $port | {
+  $app_ports.each | $port | {
     systemd::service { "${application_name}_${port}":
       description => $application_description,
       type        => $service_type,
