@@ -27,23 +27,23 @@ class apps (
     ensure => directory,
   }
 
-  file { [$root_path, $data_path, $logs_path, $var_path, $conf_path]:
+  file { [$apps::root_path, $apps::data_path, $apps::logs_path, $apps::var_path, $apps::conf_path]:
     ensure  => directory,
-    owner   => $user,
-    group   => $group,
+    owner   => $apps::user,
+    group   => $apps::group,
     mode    => '0777',
     require => File['/opt/apps'],
   }
 
-  file { "${root_path}/run":
+  file { "${apps::root_path}/run":
     ensure  => file,
     mode    => '0755',
     content => epp('apps/run.epp'),
     require => File['/opt/apps'],
   }
-  file { "${root_path}/env":
-    ensure        => file,
-    content       => epp('apps/rock_env.epp'),
+  file { "${apps::root_path}/env":
+    ensure  => file,
+    content => epp('apps/rock_env.epp'),
     require => File['/opt/apps'],
   }
 
@@ -60,7 +60,7 @@ class apps (
       env_vars    => [
         "HTTP_PORT=${port}"
       ],
-      before => Service["${application_name}_${port}"],
+      before      => Service["${application_name}_${port}"],
     }
     service { "${application_name}_${port}":
       enable => true,

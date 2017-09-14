@@ -10,12 +10,12 @@ class apps::deploy_hooks::shell{
     }
 
     file { "${predeploy_hooks_path}/01-predeploy.sh":
-      ensure   => present,
-      owner    => $user,
-      group    => $group,
-      mode     => '0755',
-      content  => "#!/bin/bash\n\n ${predeploy}",
-      require  => File[$predeploy_hooks_path],
+      ensure  => present,
+      owner   => $user,
+      group   => $group,
+      mode    => '0755',
+      content => "#!/bin/bash\n\n ${predeploy}",
+      require => File[$predeploy_hooks_path],
     }
   } else {
     file { $predeploy_hooks_path:
@@ -85,12 +85,12 @@ class apps::deploy_hooks::shell{
     }
 
     file { "${postrestart_hooks_path}/01-postrestart.sh":
-      ensure   => present,
-      owner    => $user,
-      group    => $group,
-      mode     => '0755',
-      content  => "#!/bin/bash\n\n ${postrestart}",
-      require  => File[$postrestart_hooks_path],
+      ensure  => present,
+      owner   => $user,
+      group   => $group,
+      mode    => '0755',
+      content => "#!/bin/bash\n\n ${postrestart}",
+      require => File[$postrestart_hooks_path],
     }
   } else {
     file { $postrestart_hooks_path:

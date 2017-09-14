@@ -8,4 +8,4 @@ include supervisor
 include users
 include yum
 
-stage { pre: before => Stage[main] }
+stage { 'pre': before => Stage[main] }

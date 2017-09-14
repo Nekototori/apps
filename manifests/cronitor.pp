@@ -143,7 +143,7 @@ define apps::cronitor(
   }
 
   cron { $name:
-    command  => "/bin/su ${user} -s /bin/bash -c '${full_command}' 1>> ${stdout_path} 2>> ${stderr_path}",
+    ensure   => $ensure,
     hour     => $hour,
     minute   => $minute,
     month    => $month,
@@ -151,7 +151,7 @@ define apps::cronitor(
     user     => 'root',
     weekday  => $weekday,
     require  => Apps::Setup[$app],
-    ensure   => $ensure,
+    command  => "/bin/su ${user} -s /bin/bash -c '${full_command}' 1>> ${stdout_path} 2>> ${stderr_path}",
   }
 
 }

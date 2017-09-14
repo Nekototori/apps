@@ -120,7 +120,7 @@ define apps::setup(
 
 
   file { "${root_path}/run":
-    content => template("apps/run.erb"),
+    content => template('apps/run.erb'),
     require => File[$root_path],
   }
 
@@ -128,7 +128,7 @@ define apps::setup(
     ensure  => directory,
     owner   => $user,
     group   => $group,
-    mode    => 0777,
+    mode    => '0777',
     require => File[$root_path],
   }
 
@@ -136,7 +136,7 @@ define apps::setup(
     ensure  => directory,
     owner   => $user,
     group   => $group,
-    mode    => 0777,
+    mode    => '0777',
     require => File[$root_path],
   }
 
@@ -144,7 +144,7 @@ define apps::setup(
     ensure  => directory,
     owner   => $user,
     group   => $group,
-    mode    => 0777,
+    mode    => '0777',
     require => File[$root_path],
   }
 
@@ -152,7 +152,7 @@ define apps::setup(
     ensure  => directory,
     owner   => $user,
     group   => $group,
-    mode    => 0777,
+    mode    => '0777',
     require => File[$root_path],
   }
 
@@ -163,9 +163,9 @@ define apps::setup(
     }
 
     app { $name:
-      ensure           => present,
-      deploy_style     => $deploy_style,
-      environment      => $app_env,
+      ensure       => present,
+      deploy_style => $deploy_style,
+      environment  => $app_env,
     }
   } else {
 

@@ -93,7 +93,7 @@ define apps::worker_with_sleep(
 
   case $platform {
     'rock': {
-      $command = "/opt/apps/.bin/loop_with_sleep $sleep ${root_path}/run rock --path ${repo_path} run_${run}"
+      $command = "/opt/apps/.bin/loop_with_sleep ${sleep} ${root_path}/run rock --path ${repo_path} run_${run}"
 
       supervisor::program { $name:
         user                    => $user,
@@ -114,7 +114,7 @@ define apps::worker_with_sleep(
     'node04': {
     }
     'perl588': {
-      $command = "/opt/apps/.bin/loop_with_sleep $sleep ${root_path}/run ${repo_path}/${bin_path}/${bin}"
+      $command = "/opt/apps/.bin/loop_with_sleep ${sleep} ${root_path}/run ${repo_path}/${bin_path}/${bin}"
 
       supervisor::program { $name:
         user                    => $user,

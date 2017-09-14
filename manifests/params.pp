@@ -1,3 +1,4 @@
+# Discovered and actually in use parameters for this module.
 class apps::params {
   $application_name = 'command-center'
   $application_description = 'Command Center Web Server'
@@ -9,24 +10,25 @@ class apps::params {
   $deps_path        = "${root_path}/deployment"
   $repo_path        = "${root_path}/deployment"
   $hooks_path       = "${root_path}/hooks"
-
+  # Don't know what it does, but currently is false.
+  $restart = false
   $service_type = 'simple'
   $service_restart = 'no'
   $type = 'rolling'
   $user  = 'root'
   $group = 'root'
 
-  $healthcheck_port    = "2525"
-  $delay               = "5"
-  $server_port         = "80"
+  $healthcheck_port    = '2525'
+  $delay               = '5'
+  $server_port         = '80'
   $app_ports           = ['8000', '8001']
-  $app_host            = "localhost"
-  $app_healthcheck_url = "/healthcheck.html"
+  $app_host            = 'localhost'
+  $app_healthcheck_url = '/healthcheck.html'
 
   $error_log_file = "${logs_path}/json.error.log"
   $env = 'dev'
   $environment = {
     'ERROR_LOG_FILE'         => $error_log_file,
   }
-  $puppet_path = "puppet:///modules/apps/deploy_hooks/rolling"
+  $puppet_path = 'puppet:///modules/apps/deploy_hooks/rolling'
 }
