@@ -19,10 +19,9 @@ class apps::params {
   $healthcheck_port    = "2525"
   $delay               = "5"
   $server_port         = "80"
-  $app_port            = '8000'
+  $app_port            = ['8003', '8004']
   $app_host            = "localhost"
   $app_healthcheck_url = "/healthcheck.html"
-  $app_ports           = ['8003','8004']
 
   $error_log_file = "${logs_path}/json.error.log"
   $env = 'dev'
