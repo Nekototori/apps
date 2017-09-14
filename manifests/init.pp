@@ -10,7 +10,7 @@ class apps (
   String $service_type = $apps::params::service_type,
   String $service_restart = $apps::params::service_restart,
   Hash $environment = $apps::params::environment,
-  String $error_log_file = $apps::params::error_log_file
+  String $error_log_file = $apps::params::error_log_file,
   String $env = $apps::params::env
 
 ) inherits apps::params {
