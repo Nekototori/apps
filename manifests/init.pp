@@ -62,7 +62,7 @@ class apps (
       before => Service["${application_name}_${port}"],
     }
     service { "${application_name}_${port}":
-      enabled => true,
+      enable => true,
     }
   }
 }
