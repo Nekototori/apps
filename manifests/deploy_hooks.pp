@@ -1,108 +1,101 @@
-class apps::deploy_hooks (
-  $ensure,
-  $app,
-) inherits apps {
+# This class generates files based on the type set in the apps class.
+#
+# It is a private class and should not be declared directly.
+#
+class apps::deploy_hooks inherits apps {
 
-  if $ensure == 'present' {
+# Provide a warning if this class is tried to be called directly.
+  if $caller_module_name != $module_name {
+        warning('apps::deploy_hooks is private and should not be called directly. Use apps')
+          }
 
-    $restart_script = "${hooks_path}/restart.sh"
-    $predeploy_hooks_path = "${hooks_path}/predeploy.d"
-    $postdeploy_hooks_path = "${hooks_path}/postdeploy.d"
-    $prerestart_hooks_path = "${hooks_path}/prerestart.d"
-    $postrestart_hooks_path = "${hooks_path}/postrestart.d"
+  if $apps::deploy_hooks == true {
 
-    file { $hooks_path:
+
+    file { $apps::hooks_path:
       ensure => directory,
-      owner  => $user,
-      group  => $group,
-      mode   => '0777'
+      owner  => $apps::user,
+      group  => $apps::group,
+      mode   => '0777',
     }
 
-    if $restart == false {
-      file { $restart_script:
+    if $apps::restart == false {
+      file { $apps::restart_script:
         ensure => absent,
         force  => true,
       }
     }
 
-    case $type {
+    case $apps::type {
       'rolling': {
-        file { [
-                 "${$predeploy_hooks_path}",
-                 "${postrestart_hooks_path}"
-               ]:
+        file { [ $apps::predeploy_hooks_path, $apps::postrestart_hooks_path ]:
           ensure => directory,
-          owner  => $user,
-          group  => $group,
+          owner  => $apps::user,
+          group  => $apps::group,
           mode   => '0755',
-       }
+        }
 
-       file { "${hooks_path}/predeploy.d/01-predeploy.sh":
-         ensure => file,
-         owner  => 'root',
-         group  => 'root',
-         mode   => '0755',
-         source => "${puppet_path}/01-predeploy.sh"
-       }
+        file { "${apps::hooks_path}/predeploy.d/01-predeploy.sh":
+          ensure => file,
+          owner  => 'root',
+          group  => 'root',
+          mode   => '0755',
+          source => "${apps::puppet_path}/01-predeploy.sh",
+        }
 
-       file { "${hooks_path}/postrestart.d/01-postrestart.sh":
-         ensure => file,
-         owner  => 'root',
-         group  => 'root',
-         mode   => '0755',
-         source => "${puppet_path}/01-postrestart.sh"
-       }
+        file { "${apps::hooks_path}/postrestart.d/01-postrestart.sh":
+          ensure => file,
+          owner  => 'root',
+          group  => 'root',
+          mode   => '0755',
+          source => "${apps::puppet_path}/01-postrestart.sh",
+        }
 
-       #       file { "/etc/nginx/vhost.d/healthcheck.conf":
-       #  ensure  => file,
-       #  owner   => 'root',
-       #  group   => 'root',
-       #  mode    => '0644',
-       #  content => template("apps/healthcheck.conf.erb"),
-       #}
+        file { "${apps::root_path}/deployenv":
+          ensure  => file,
+          owner   => 'root',
+          group   => 'root',
+          mode    => '0644',
+          content => epp('apps/deployenv.epp'),
+        }
 
-       file { "${base_path}/deployenv":
-         ensure  => file,
-         owner   => 'root',
-         group   => 'root',
-         mode    => '0644',
-         content => template("apps/deployenv.erb"),
-       }
-
-        if $restart {
-          file { $restart_script:
-            ensure  => present,
-            source  => "${puppet_path}/restart.sh",
-            owner   => $user,
-            group   => $group,
-            mode    => '0755',
-            require => File[$hooks_path],
-          }
+        if $apps::restart {
+          warning('You\'ve set something that hasn\'t been configured! Beware!')
+          #          file { $apps::restart_script:
+          #  ensure  => present,
+          #  source  => "${apps::puppet_path}/restart.sh",
+          #  owner   => $apps::user,
+          #  group   => $apps::group,
+          #  mode    => '0755',
+          #  require => File[$apps::hooks_path],
+          #}
         }
       }
-
+      # Only a rolling deploy exists. The file referenced for custom never survived the inquisition.
       'custom': {
-        if $restart {
-          file { $restart_script:
-            ensure  => present,
-            source  => "${puppet_path}/restart.sh",
-            owner   => $user,
-            group   => $group,
-            mode    => '0755',
-            require => File[$hooks_path],
-          }
-        }
+        warning('You\'ve set something that hasn\'t been configured! Beware!')
+          # if $apps::restart {
+          #file { $apps::restart_script:
+          #  ensure  => present,
+          #  source  => "${apps::puppet_path}/restart.sh",
+          #  owner   => $apps::user,
+          #   group   => $apps::group,
+          #  mode    => '0755',
+          #  require => File[$apps::hooks_path],
+          #}
+          # }
       }
-
+      # Shell doesn't do anything. Was not setup/migrated.
       'shell': {
-        include apps::deploy_hooks::shell
+        warning('You\'ve set something that hasn\'t been configured! Beware!')
+        #        include apps::deploy_hooks::shell
       }
-      default: { fail ( "Unknown deploy hook type ${type}" ) }
+      default: { fail ( "Unknown deploy hook type ${apps::type}" ) }
     }
 
   } else {
 
-    file { $hooks_path:
+    file { $apps::hooks_path:
       ensure  => absent,
       recurse => true,
       force   => true,
