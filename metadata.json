@@ -13,12 +13,6 @@
   ],
   "operatingsystem_support": [
     {
-      "operatingsystem": "Debian",
-      "operatingsystemrelease": [
-        "8"
-      ]
-    },
-    {
       "operatingsystem": "RedHat",
       "operatingsystemrelease": [
         "7.0"
@@ -27,13 +21,7 @@
     {
       "operatingsystem": "Ubuntu",
       "operatingsystemrelease": [
-        "16.04"
-      ]
-    },
-    {
-      "operatingsystem": "windows",
-      "operatingsystemrelease": [
-        "2012 R2"
+        "8"
       ]
     }
   ],

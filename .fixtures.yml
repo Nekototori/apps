@@ -3,4 +3,8 @@
 ---
 fixtures:
   forge_modules:
-#     stdlib: "puppetlabs/stdlib"
+    stdlib: "puppetlabs/stdlib"
+    eyplib: "eyp/eyplib"
+    systemd: "eyp/systemd"
+  repositories:
+    ss_firewall: "git@github.shuttercorp.net:puppet/rock.git"
