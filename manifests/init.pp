@@ -29,15 +29,6 @@
 # @param service_restart [String] Specify if you want the service to restart automatically or not.
 # Accepts values of 'yes' or 'no'.
 # Default Value: 'no'
-# @param environment [Hash] A poorly named variable that specifies the log file output and was probably
-# used by the knights who say Ni on their quest for a shrubbery.
-# Default Value: {
-#                 'ERROR_LOG_FILE' => $error_log_file,
-#                }
-# @param error_log_file [String] Was originally a parameter and still is because it's a nephew
-# of the King's.  You could override it if you want, maybe put a log file somewhere else or some voodoo.
-# And no, $logs_path isn't exposed here, because voodoo reasons. But it is in params.
-# Default Value: "${logs_path}/json.error.log"
 # @param env [String] Allows for an override of the environment, in case you have a vagrant box or
 # some other unique snowflake that doesn't work with the $facts['ss_tier'] call.
 # Default Value: 'dev'
@@ -52,12 +43,29 @@ class apps (
   Array  $app_ports = $apps::params::app_ports,
   String $service_type = $apps::params::service_type,
   String $service_restart = $apps::params::service_restart,
-  Hash $environment = $apps::params::environment,
-  String $error_log_file = $apps::params::error_log_file,
   String $env = $apps::params::env,
   Boolean $deploy_hooks = $apps::params::deploy_hooks,
 
 ) inherits apps::params {
+
+  # Set the parameters used elsewhere.
+  $root_path        = "/opt/apps/${application_name}"
+  $data_path        = "${root_path}/data"
+  $logs_path        = "${root_path}/logs"
+  $var_path         = "${root_path}/var"
+  $conf_path        = "${root_path}/conf"
+  $deps_path        = "${root_path}/deployment"
+  $repo_path        = "${root_path}/deployment"
+  $hooks_path       = "${root_path}/hooks"
+  $restart_script = "${hooks_path}/restart.sh"
+  $predeploy_hooks_path = "${hooks_path}/predeploy.d"
+  $postdeploy_hooks_path = "${hooks_path}/postdeploy.d"
+  $prerestart_hooks_path = "${hooks_path}/prerestart.d"
+  $postrestart_hooks_path = "${hooks_path}/postrestart.d"
+  $error_log_file = "${logs_path}/json.error.log"
+  $environment = {
+    'ERROR_LOG_FILE'         => $error_log_file,
+  }
 
   # Depending on what deploy_hooks is set to, it will execute this
   # class and add the files, or remove the files.
