@@ -14,15 +14,21 @@ describe 'apps' do
             'application_name' => 'spec_test',
             'application_description' => 'testing spec',
             'app_ports' => %w[1234 5678],
+            'env' => 'spec',
           }
         end
 
         it 'directories' do
-          is_expected.to contain_file('/opt/apps/spec_test')
-          is_expected.to contain_file('/opt/apps/spec_test/data')
-          is_expected.to contain_file('/opt/apps/spec_test/var')
-          is_expected.to contain_file('/opt/apps/spec_test/logs')
-          is_expected.to contain_file('/opt/apps/spec_test/conf')
+          is_expected.to contain_file('/opt/apps/spec_test').with('ensure' => 'directory')
+          is_expected.to contain_file('/opt/apps/spec_test/data').with('ensure' => 'directory')
+          is_expected.to contain_file('/opt/apps/spec_test/var').with('ensure' => 'directory')
+          is_expected.to contain_file('/opt/apps/spec_test/logs').with('ensure' => 'directory')
+          is_expected.to contain_file('/opt/apps/spec_test/conf').with('ensure' => 'directory')
+        end
+
+        it 'files' do
+          is_expected.to contain_file('/opt/apps/spec_test/run').with_content(%r{spec_test})
+          is_expected.to contain_file('/opt/apps/spec_test/env').with_content(%r{spec})
         end
 
         it 'services' do
